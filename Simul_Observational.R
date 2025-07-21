@@ -370,7 +370,6 @@ RECAP$pY1       = as.factor(RECAP$pY1)
 RECAP$n         = as.factor(RECAP$n)
 RECAP$A         = as.factor(RECAP$A)
 RECAP$Approach  = as.factor(RECAP$Approach)
-#RECAP$Approach  = factor(RECAP$Approach, labels = c("Joint-MH", "Joint-NC", "Joint-Reg", "MH", "Reg"))
 
 myfile  = paste0("RECAP_Observational-beta1", round(beta_1, digits = 3), ".RData")
 save(RECAP, file = myfile)
