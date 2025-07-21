@@ -475,9 +475,9 @@ Res[ColNames] = sapply(Res[ColNames], as.numeric)
 save(Res, file = paste0("Res_Observational-beta1", round(beta_1, digits = 3),
                         ".RData"))
 Res[ColNames] = round(Res[ColNames], digits = 3)
-write.csv(Res, file = paste0("Res_NonRandomized-beta1",
+write.csv(Res, file = paste0("Res_Observational-beta1",
                              round(beta_1, digits = 3), ".csv"))
-write.xlsx(Res, file = paste0("Res_NonRandomized-beta1",
+write.xlsx(Res, file = paste0("Res_Observational-beta1",
                               round(beta_1, digits = 3), ".xlsx"))
 Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7,8,10,11,12,14,13,15,28,29,34)]) # only the scenarios with n = 10,000
