@@ -30,8 +30,8 @@ Each script relies on functions provided in `EstimationFunctions.R` and certain 
 
 * **JointNC** - estimation with method Joint-NC. Relies on the joint estimation of the treatment effect on the targeted (i.e., primary) and untargeted (i.e., secondary) outcomes. Information on potential observed covariates or confounders is not used
 
-* **JointStratificationMH** - estimation method Joint-MH. Relies on the joint estimation of the treatment effect on the targeted (i.e., primary) and untargeted (i.e., secondary) outcomes, using stratification on observed confounders with Mantel-Haenszel weights. 
+* **JointMH** - estimation method Joint-MH. Relies on the joint estimation of the treatment effect on the targeted (i.e., primary) and untargeted (i.e., secondary) outcomes, using stratification on observed confounders with Mantel-Haenszel weights. 
 
 * **JointReg** - estimation with method Joint-Reg. Relies on joint estimation of the treatment effect on the targeted (i.e., primary) and untargeted (i.e., secondary) outcomes, using regression models where observed confounders are included. For continuous confounders, quadratic polynomial functions are used.
 
-* **JointReg_CatCov** and **JointReg_ContCov** - estimation with method Joint-Reg, just as in function **JointReg**, but when the observed confounders are all categorical or all continuous.
+* **JointRegCat** and **JointRegCont** - estimation with method Joint-Reg, just as in function **JointReg**, but when the observed confounders are all categorical or all continuous.
