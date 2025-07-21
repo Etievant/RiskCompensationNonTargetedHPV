@@ -483,8 +483,8 @@ Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7,8,10,11,12,14,13,15,28,29,34)]) # only the scenarios with n = 10,000
 print(xtable(latextable, digits = 3), include.rownames=FALSE) # print the latex table
 # Res2 = Res[which(Res$n == 5000),]
-# b = cbind(Res2[, c(7,8,10,11,12,14,13,15,28,29,34)])
-# print(xtable(b, digits = 3), include.rownames=FALSE) # latex table for n = 5,000
+# latextable2 = cbind(Res2[, c(7,8,10,11,12,14,13,15,28,29,34)])
+# print(xtable(latextable2, digits = 3), include.rownames=FALSE) # latex table for n = 5,000
 
 ## Plotting the results --------------------------------------------------------
 RECAP$pY1 = factor(RECAP$pY1,
