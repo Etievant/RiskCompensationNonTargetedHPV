@@ -544,7 +544,8 @@ plot = ggplot(RECAP1, aes(x = n, y = Effect.hat, color = Approach)) +
         strip.text.x = element_text(size = 11, color = "black"),
         strip.text.y = element_text(size = 11, color = "black")) +
   scale_colour_manual(values = c("deeppink", "cadetblue", "darkorange"),
-                      labels = expression(hat(beta[1])^"*", hat(beta[1])^"*"-hat(beta[2])^"*",hat(beta[2])^"*"))
+                      labels = expression(hat(beta[1])^"*", hat(beta[1])^"*"-hat(beta[2])^"*",hat(beta[2])^"*"),
+                      name = "Joint-NC estimate")
 pdf(paste0("Comparison_RandomizedUnblinded-methodNC-beta1", round(beta_1, digits = 3), ".pdf"),  width = 10, height = 7)
 plot
 dev.off()
