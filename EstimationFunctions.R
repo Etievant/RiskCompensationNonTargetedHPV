@@ -208,9 +208,9 @@ JointReg = function(Y1 = Y1, Y2 = Y2, T = T, Wcont = NULL, Wcat = NULL){
       JointNC(Y1 = Y1, Y2 = Y2, T = T)
     }else{
       if((is.null(Wcat))){
-        JointReg_ContCov(Y1 = Y1, Y2 = Y2, T = T, Wcont = Wcont)
+        JointRegCont(Y1 = Y1, Y2 = Y2, T = T, Wcont = Wcont)
       }else{
-        JointReg_CatCov(Y1 = Y1, Y2 = Y2, T = T, Wcat = Wcat)
+        JointRegCat(Y1 = Y1, Y2 = Y2, T = T, Wcat = Wcat)
       }}}
   else{
     Wcat                = as.matrix(Wcat)
