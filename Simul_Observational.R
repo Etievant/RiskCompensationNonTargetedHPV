@@ -500,7 +500,7 @@ RECAP = RECAP[-which(RECAP$Approach == "Joint-NC"),]
 plot = ggplot(RECAP, aes(x = n, y = beta_1.hat, color = Approach)) +
   geom_boxplot(coef = NULL) + geom_hline(aes(yintercept = NDE.true)) +
   geom_hline(aes(yintercept = ATE.true), linetype = "dotdash") + theme_light() +
-  ylab("Estimated vaccine effect on the targeted outcome") +
+  ylab("Estimated log-ratio effect of the vaccine on the targeted outcome") +
   xlab("Observational study size") +
   facet_grid(pY1~A, labeller = label_parsed, scales = "free_y") +
   theme(plot.title = element_text(size = 11),
