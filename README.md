@@ -23,7 +23,7 @@ Each script relies on functions provided in `EstimationFunctions.R` and certain 
 
 * Open and run the script(s).
 
-* The results of the simulations are saved in figures and tables. For example, when running script `Simul_Observational.R`, file `Comparison_Observational-beta1-0.73.pdf` will give Figure 4 in Section 4 in the Main Document.
+* The results of the simulations are saved in figures and tables. For example, when running script `Simul_Observational.R`, file `Comparison_Observational-beta1-0.73.pdf` will give Figure 4 in Section 4 in the Main Document. Table 1 in Section 4 in the Main Document can be directly obtained via the LaTeX table printed in the Console.
 
 
 ### Functions provided in `EstimationFunctions.R`
