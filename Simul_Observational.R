@@ -86,12 +86,12 @@ Patildalow          = array(0, c(nRegion, nAge, length(a))) # P(Atilda = alow | 
 Patildalow[,,1]     = rep(0.9^(seq(nAge) / 10), each = 3)
 Patildalow[,,2]     = 0.01
 Patildamedium       = array(0, c(nRegion, nAge, length(a))) # P(Atilda = amedium | W = w, A, T = 1)
-Patildamedium[,,1]  = 0.08
+Patildamedium[,,1]  = 0.2
 Patildamedium[,,2]  = rep(0.9^(seq(nAge) / 10), each = 3)
 Patildamedium[,,3]  = 0.01
 Patildahigh         = array(0, c(nRegion, nAge, length(a))) # P(Atilda = ahigh | W = w, A, T = 1)
 Patildahigh[,,1]    = 0.02
-Patildahigh[,,2]    = 0.1
+Patildahigh[,,2]    = 0.2
 Patildahigh[,,3]    = rep(0.99^(seq(nAge) / 10), each = 3)
 
 # P(Atilda | W, A, T)
@@ -228,7 +228,7 @@ Onerun = function(p){
   corrY1Y2s = covY1Y2s / sqrt(varY1 * varY2s)
   
   # Parameters of potential causal interest
-  # ATE, NDE and NIE
+  # log-ATE, log-NDE and log-NIE
   EY1_T1 = 0
   EY1_T0 = 0
   EY1_T1AtildaT0 = 0
@@ -245,9 +245,9 @@ Onerun = function(p){
   EY1_T0          = EY1_T0 * exp(alpha_1)
   EY1_T1AtildaT0  = EY1_T1AtildaT0 * exp(alpha_1 + beta_1)
   
-  ATE.true  = log(EY1_T1 / EY1_T0) # overall protective of the vaccine
-  NIE.true  = log(EY1_T1 / EY1_T1AtildaT0) # harmful indirect (behavioral) effect of the vaccine
-  NDE.true  = log(EY1_T1AtildaT0 / EY1_T0) # protective direct (immunological) effect of the vaccine
+  log.ATE.true  = log(EY1_T1 / EY1_T0) # overall log-ratio effect of the vaccine
+  log.NIE.true  = log(EY1_T1 / EY1_T1AtildaT0) # harmful indirect (behavioral) log-ratio effect of the vaccine
+  log.NDE.true  = log(EY1_T1AtildaT0 / EY1_T0) # protective direct (immunological) log-ratio effect of the vaccine
   
   res           = NULL
   
@@ -330,9 +330,9 @@ Onerun = function(p){
     res = rbind(res, cbind(recap, n = n, pY1 = pY1, 
                            pY2 = paste(pY2, collapse = "_"), 
                            A = paste(a, collapse = "_"), 
-                           ATE.true = as.numeric(ATE.true), 
-                           NDE.true = as.numeric(NDE.true), 
-                           NIE.true = as.numeric(NIE.true), 
+                           log.ATE.true = as.numeric(log.ATE.true), 
+                           log.NDE.true = as.numeric(log.NDE.true), 
+                           log.NIE.true = as.numeric(log.NIE.true), 
                            corrY1Y2s.true = as.numeric(corrY1Y2s), 
                            corrY1Y2s = cor(Y1,Y2s), 
                            meanY1.true = as.numeric(meanY1), meanY1 = mean(Y1), 
@@ -450,9 +450,9 @@ for(i in 1:nrow(PARAM)){
                      pY1 = as.character(RECAP1[1,]$pY1),
                      A =  as.character(RECAP1[1,]$A),
                      beta_1 = beta_1,
-                     ATE.true = RECAP1[1,]$ATE.true,
-                     NDE.true = RECAP1[1,]$NDE.true,
-                     NIE.true = RECAP1[1,]$NIE.true,
+                     log.ATE.true = RECAP1[1,]$log.ATE.true,
+                     log.NDE.true = RECAP1[1,]$log.NDE.true,
+                     log.NIE.true = RECAP1[1,]$log.NIE.true,
                      corrY1Y2s.true = RECAP1[1,]$corrY1Y2s.true,
                      corrY1Y2s = mean(RECAP1$corrY1Y2s),
                      meanY1.true = RECAP1[1,]$meanY1.true,
@@ -498,8 +498,8 @@ RECAP$A = factor(RECAP$A,
 RECAP$Approach = factor(RECAP$Approach,levels(RECAP$Approach)[c(1,3,2,4,5)])
 RECAP = RECAP[-which(RECAP$Approach == "Joint-NC"),]
 plot = ggplot(RECAP, aes(x = n, y = beta_1.hat, color = Approach)) +
-  geom_boxplot(coef = NULL) + geom_hline(aes(yintercept = NDE.true)) +
-  geom_hline(aes(yintercept = ATE.true), linetype = "dotdash") + theme_light() +
+  geom_boxplot(coef = NULL) + geom_hline(aes(yintercept = log.NDE.true)) +
+  geom_hline(aes(yintercept = log.ATE.true), linetype = "dotdash") + theme_light() +
   ylab("Estimated log-ratio effect of the vaccine on the targeted outcome") +
   xlab("Observational study size") +
   facet_grid(pY1~A, labeller = label_parsed, scales = "free_y") +
