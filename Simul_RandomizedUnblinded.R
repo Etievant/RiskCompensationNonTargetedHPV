@@ -82,12 +82,12 @@ Patildalow          = array(0, c(nRegion, nAge, length(a))) # P(Atilda = alow | 
 Patildalow[,,1]     = rep(0.9^(seq(nAge) / 10), each = 3)
 Patildalow[,,2]     = 0.01
 Patildamedium       = array(0, c(nRegion, nAge, length(a))) # P(Atilda = amedium | W = w, A, T = 1)
-Patildamedium[,,1]  = 0.08
+Patildamedium[,,1]  = 0.2
 Patildamedium[,,2]  = rep(0.9^(seq(nAge) / 10), each = 3)
 Patildamedium[,,3]  = 0.01
 Patildahigh         = array(0, c(nRegion, nAge, length(a))) # P(Atilda = ahigh | W = w, A, T = 1)
 Patildahigh[,,1]    = 0.02
-Patildahigh[,,2]    = 0.1
+Patildahigh[,,2]    = 0.2
 Patildahigh[,,3]    = rep(0.99^(seq(nAge) / 10), each = 3)
 
 # P(Atilda | W, A, T)
@@ -210,7 +210,7 @@ Onerun = function(p){
   corrY1Y2s = covY1Y2s / sqrt(varY1 * varY2s)
  
   # Parameters of potential causal interest
-  # ATE, NDE and NIE
+  # log-ATE, log-NDE and log-NIE
   EY1_T1 = 0
   EY1_T0 = 0
   EY1_T1AtildaT0 = 0
@@ -227,9 +227,9 @@ Onerun = function(p){
   EY1_T0          = EY1_T0 * exp(alpha_1)
   EY1_T1AtildaT0  = EY1_T1AtildaT0 * exp(alpha_1 + beta_1)
   
-  ATE.true  = log(EY1_T1 / EY1_T0) # overall protective of the vaccine
-  NIE.true  = log(EY1_T1 / EY1_T1AtildaT0) # harmful indirect (behavioral) effect of the vaccine
-  NDE.true  = log(EY1_T1AtildaT0 / EY1_T0) # protective direct (immunological) effect of the vaccine
+  log.ATE.true  = log(EY1_T1 / EY1_T0) # overall log-ratio effect of the vaccine
+  log.NIE.true  = log(EY1_T1 / EY1_T1AtildaT0) # harmful log-ratio indirect (behavioral) effect of the vaccine
+  log.NDE.true  = log(EY1_T1AtildaT0 / EY1_T0) # protective log-ratio direct (immunological) effect of the vaccine
   
   res           = NULL
   
@@ -284,56 +284,56 @@ Onerun = function(p){
     est.jointMH     = JointMH(Y1, Y2s, T = T, W = W) # estimation with method Joint-MH
     est.jointNC     = JointNC(Y1 = Y1, Y2 = Y2s, T = T) # estimation with method Joint-NC (i.e., when the observed covariates are not used)
  
-    Reg.NDE     = cbind("Reg.NDE", est.jointReg$beta_1.hat, 
+    Reg.log.NDE     = cbind("Reg.log.NDE", est.jointReg$beta_1.hat, 
                         est.jointReg$se.beta_1.hat, 
                         est.jointReg$beta_1.hat - est.jointReg$se.beta_1.hat * qnorm(0.975), 
                         est.jointReg$beta_1.hat + est.jointReg$se.beta_1.hat * qnorm(0.975)) # beta1 - beta2 should gives- NDE
-    Reg.ATE     = cbind("Reg.ATE", est.jointReg$beta_1.hat.naive, 
+    Reg.log.ATE     = cbind("Reg.log.ATE", est.jointReg$beta_1.hat.naive, 
                         est.jointReg$se.beta_1.hat.naive, 
                         est.jointReg$beta_1.hat.naive - est.jointReg$se.beta_1.hat.naive * qnorm(0.975), 
                         est.jointReg$beta_1.hat.naive + est.jointReg$se.beta_1.hat.naive * qnorm(0.975)) # beta1 should give ATE
-    Reg.NIE     = cbind("Reg.NIE", est.jointReg$beta_2.hat.naive, 
+    Reg.log.NIE     = cbind("Reg.log.NIE", est.jointReg$beta_2.hat.naive, 
                         est.jointReg$se.beta_2.hat.naive, 
                         est.jointReg$beta_2.hat.naive - est.jointReg$se.beta_2.hat.naive * qnorm(0.975), 
                         est.jointReg$beta_2.hat.naive + est.jointReg$se.beta_2.hat.naive * qnorm(0.975)) # beta2 should give NIE
     
-    MH.NDE      = cbind("MH.NDE", est.jointMH$beta_1.hat, 
+    MH.log.NDE      = cbind("MH.log.NDE", est.jointMH$beta_1.hat, 
                         est.jointMH$se.beta_1.hat,  
                         est.jointMH$beta_1.hat - est.jointMH$se.beta_1.hat * qnorm(0.975), 
                         est.jointMH$beta_1.hat + est.jointMH$se.beta_1.hat * qnorm(0.975))
-    MH.ATE      = cbind("MH.ATE", est.jointMH$beta_1.hat.naive, 
+    MH.log.ATE      = cbind("MH.log.ATE", est.jointMH$beta_1.hat.naive, 
                         est.jointMH$se.beta_1.hat.naive, 
                         est.jointMH$beta_1.hat.naive - est.jointMH$se.beta_1.hat.naive * qnorm(0.975), 
                         est.jointMH$beta_1.hat.naive + est.jointMH$se.beta_1.hat.naive * qnorm(0.975))
-    MH.NIE      = cbind("MH.NIE", est.jointMH$beta_2.hat.naive, 
+    MH.log.NIE      = cbind("MH.log.NIE", est.jointMH$beta_2.hat.naive, 
                         est.jointMH$se.beta_2.hat.naive, 
                         est.jointMH$beta_2.hat.naive - est.jointMH$se.beta_2.hat.naive * qnorm(0.975), 
                         est.jointMH$beta_2.hat.naive + est.jointMH$se.beta_2.hat.naive * qnorm(0.975))
     
-    NC.NDE      = cbind("NC.NDE", est.jointNC$beta_1.hat, 
+    NC.log.NDE      = cbind("NC.log.NDE", est.jointNC$beta_1.hat, 
                         est.jointNC$se.beta_1.hat, 
                         est.jointNC$beta_1.hat - est.jointNC$se.beta_1.hat * qnorm(0.975), 
                         est.jointNC$beta_1.hat + est.jointNC$se.beta_1.hat * qnorm(0.975))
-    NC.ATE      = cbind("NC.ATE",  est.jointNC$beta_1.hat.naive, 
+    NC.log.ATE      = cbind("NC.log.ATE",  est.jointNC$beta_1.hat.naive, 
                         est.jointNC$se.beta_1.hat.naive, 
                         est.jointNC$beta_1.hat.naive - est.jointNC$se.beta_1.hat.naive * qnorm(0.975), 
                         est.jointNC$beta_1.hat.naive + est.jointNC$se.beta_1.hat.naive * qnorm(0.975))
-    NC.NIE      = cbind("NC.NIE", est.jointNC$beta_2.hat.naive, 
+    NC.log.NIE      = cbind("NC.log.NIE", est.jointNC$beta_2.hat.naive, 
                         est.jointNC$se.beta_2.hat.naive, 
                         est.jointNC$beta_2.hat.naive - est.jointNC$se.beta_2.hat.naive * qnorm(0.975), 
                         est.jointNC$beta_2.hat.naive + est.jointNC$se.beta_2.hat.naive * qnorm(0.975))
     
-    recap = rbind(Reg.NDE, Reg.NIE, Reg.ATE, MH.NDE, MH.NIE, MH.ATE, NC.NDE, 
-                  NC.NIE, NC.ATE)
+    recap = rbind(Reg.log.NDE, Reg.log.NIE, Reg.log.ATE, MH.log.NDE, MH.log.NIE, MH.log.ATE, NC.log.NDE, 
+                  NC.log.NIE, NC.log.ATE)
     colnames(recap) = c("Approach", "Effect.hat", "se.Effect.hat", 
                         "CI.Effect.left", "CI.Effect.right")
     
     res = rbind(res, cbind(recap, n = n, pY1 = pY1, 
                            pY2 = paste(pY2, collapse = "_"), 
                            A = paste(a, collapse = "_"), 
-                           ATE.true = as.numeric(ATE.true), 
-                           NDE.true = as.numeric(NDE.true), 
-                           NIE.true = as.numeric(NIE.true), 
+                           log.ATE.true = as.numeric(ATE.log.true), 
+                           log.NDE.true = as.numeric(NDE.log.true), 
+                           log.NIE.true = as.numeric(NIE.log.true), 
                            corrY1Y2s.true = as.numeric(corrY1Y2s), 
                            corrY1Y2s = cor(Y1,Y2s), 
                            meanY1.true = as.numeric(meanY1), meanY1 = mean(Y1), 
@@ -382,9 +382,9 @@ Res = NULL
 for(i in 1:nrow(PARAM)){
   RECAP1 = RECAP[((i-1)*(9*Nreplic) + 1):(i*(9*Nreplic)),]
 
-  ATE = RECAP1$ATE.true[1]
-  NDE = RECAP1$NDE.true[1]
-  NIE = RECAP1$NIE.true[1]
+  log.ATE = RECAP1$log.ATE.true[1]
+  log.NDE = RECAP1$log.NDE.true[1]
+  log.NIE = RECAP1$log.NIE.true[1]
 
   # Coverage of the confidence intervals
   cov.ATE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.ATE"),4] < ATE)&(RECAP1[which(RECAP1$Approach == "NC.ATE"),5] > ATE)) / length(RECAP1[which(RECAP1$Approach == "NC.ATE"),5])
@@ -439,49 +439,49 @@ for(i in 1:nrow(PARAM)){
   mean.NIE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.NIE"),2])
   MSE.NIE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.NIE"),2] - NIE)^2) # MSE
 
-  Res = rbind(Res, c(relbias.NDE.MH = abs((mean.NDE.MH - NDE) / NDE),
-                     relbias.NIE.MH = abs((mean.NIE.MH - NIE) / NIE),
-                     relbias.ATE.MH = abs((mean.ATE.MH - ATE) / ATE),
-                     relbias.NDE.Reg = abs((mean.NDE.Reg - NDE) / NDE),
-                     relbias.NIE.Reg = abs((mean.NIE.Reg - NIE) / NIE),
-                     relbias.ATE.Reg = abs((mean.ATE.Reg - ATE) / ATE),
-                     relbias.NDE.NC = abs((mean.NDE.NC - NDE) / NDE),
-                     relbias.NIE.NC = abs((mean.NIE.NC - NIE) / NIE),
-                     relbias.ATE.NC = abs((mean.ATE.NC - ATE) / ATE),
-                     empir_sd.NDE.MH = sd.NDE.MH,
-                     sandwich_se.NDE.MH = sandwich_se.NDE.MH,
-                     empir_sd.NIE.MH = sd.NIE.MH,
+  Res = rbind(Res, c(relbias.log.NDE.MH = abs((mean.NDE.MH - NDE) / NDE),
+                     relbias.log.NIE.MH = abs((mean.NIE.MH - NIE) / NIE),
+                     relbias.log.ATE.MH = abs((mean.ATE.MH - ATE) / ATE),
+                     relbias.log.NDE.Reg = abs((mean.NDE.Reg - NDE) / NDE),
+                     relbias.log.NIE.Reg = abs((mean.NIE.Reg - NIE) / NIE),
+                     relbias.log.ATE.Reg = abs((mean.ATE.Reg - ATE) / ATE),
+                     relbias.log.NDE.NC = abs((mean.NDE.NC - NDE) / NDE),
+                     relbias.log.NIE.NC = abs((mean.NIE.NC - NIE) / NIE),
+                     relbias.log.ATE.NC = abs((mean.ATE.NC - ATE) / ATE),
+                     empir_sd.log.NDE.MH = sd.NDE.MH,
+                     sandwich_se.log.NDE.MH = sandwich_se.NDE.MH,
+                     empir_sd.log.NIE.MH = sd.NIE.MH,
                      sandwich_se.NIE.MH = sandwich_se.NIE.MH,
-                     empir_sd.ATE.MH = sd.ATE.MH,
-                     sandwich_se.ATE.MH = sandwich_se.ATE.MH,
-                     empir_sd.NDE.Reg = sd.NDE.Reg,
-                     sandwich_se.NDE.Reg = sandwich_se.NDE.Reg,
-                     empir_sd.NIE.Reg = sd.NIE.Reg,
-                     sandwich_se.NIE.Reg = sandwich_se.NIE.Reg,
-                     empir_sd.ATE.Reg = sd.ATE.Reg,
-                     sandwich_se.ATE.Reg = sandwich_se.ATE.Reg,
-                     empir_sd.NDE.NC = sd.NDE.NC,
-                     sandwich_se.NDE.NC = sandwich_se.NDE.NC,
-                     empir_sd.NIE.NC = sd.NIE.NC,
-                     sandwich_se.NIE.NC = sandwich_se.NIE.NC,
-                     empir_sd.ATE.NC = sd.ATE.NC,
-                     sandwich_se.ATE.NC = sandwich_se.ATE.NC,
+                     empir_sd.log.ATE.MH = sd.ATE.MH,
+                     sandwich_se.log.ATE.MH = sandwich_se.ATE.MH,
+                     empir_sd.log.NDE.Reg = sd.NDE.Reg,
+                     sandwich_se.log.NDE.Reg = sandwich_se.NDE.Reg,
+                     empir_sd.log.NIE.Reg = sd.NIE.Reg,
+                     sandwich_se.log.NIE.Reg = sandwich_se.NIE.Reg,
+                     empir_sd.log.ATE.Reg = sd.ATE.Reg,
+                     sandwich_se.log.ATE.Reg = sandwich_se.ATE.Reg,
+                     empir_sd.log.NDE.NC = sd.NDE.NC,
+                     sandwich_se.log.NDE.NC = sandwich_se.NDE.NC,
+                     empir_sd.log.NIE.NC = sd.NIE.NC,
+                     sandwich_se.log.NIE.NC = sandwich_se.NIE.NC,
+                     empir_sd.log.ATE.NC = sd.ATE.NC,
+                     sandwich_se.log.ATE.NC = sandwich_se.ATE.NC,
                      CIcov.NDE.MH = cov.NDE.MH,
                      CIcov.NIE.MH = cov.NIE.MH,
-                     CIcov.ATE.MH = cov.ATE.MH,
-                     CIcov.NDE.Reg = cov.NDE.Reg,
-                     CIcov.NIE.Reg = cov.NIE.Reg,
-                     CIcov.ATE.Reg = cov.ATE.Reg,
-                     CIcov.NDE.NC = cov.NDE.NC,
-                     CIcov.NIE.NC = cov.NIE.NC,
-                     CIcov.ATE.NC = cov.ATE.NC,
+                     CIcov.log.ATE.MH = cov.ATE.MH,
+                     CIcov.log.NDE.Reg = cov.NDE.Reg,
+                     CIcov.log.NIE.Reg = cov.NIE.Reg,
+                     CIcov.log.ATE.Reg = cov.ATE.Reg,
+                     CIcov.log.NDE.NC = cov.NDE.NC,
+                     CIcov.log.NIE.NC = cov.NIE.NC,
+                     CIcov.log.ATE.NC = cov.ATE.NC,
                      n = as.character(RECAP1[1,]$n),
                      pY1 = as.character(RECAP1[1,]$pY1),
                      A =  as.character(RECAP1[1,]$A),
                      beta_1 = beta_1,
-                     ATE.true = RECAP1[1,]$ATE.true,
-                     NDE.true = RECAP1[1,]$NDE.true,
-                     NIE.true = RECAP1[1,]$NIE.true,
+                     log.ATE.true = RECAP1[1,]$log.ATE.true,
+                     log.NDE.true = RECAP1[1,]$log.NDE.true,
+                     log.NIE.true = RECAP1[1,]$log.NIE.true,
                      corrY1Y2s.true = RECAP1[1,]$corrY1Y2s.true,
                      corrY1Y2s = mean(RECAP1$corrY1Y2s),
                      meanY1.true = RECAP1[1,]$meanY1.true,
@@ -525,15 +525,15 @@ RECAP$A = factor(RECAP$A,
                  labels = c(expression(a[low]==~0~","~a[medium]==~0.75~","~a[high]==~1.5),
                             expression(a[low]==~0~","~a[medium]==~1~","~a[high]==~2),
                             expression(a[low]==~0~","~a[medium]==~1~","~a[high]==~2.5) ))
-RECAP1 = RECAP[which(RECAP$Approach == "NC.NIE" | RECAP$Approach == "NC.NDE" | RECAP$Approach == "NC.ATE"),]
+RECAP1 = RECAP[which(RECAP$Approach == "NC.log.NIE" | RECAP$Approach == "NC.log.NDE" | RECAP$Approach == "NC.log.ATE"),]
 RECAP1$Approach = factor(RECAP1$Approach)
 RECAP1$Approach = factor(RECAP1$Approach,
                          labels = c(expression(hat(beta)^"*", hat(beta),hat(beta^"*"))))
 plot = ggplot(RECAP1, aes(x = n, y = Effect.hat, color = Approach)) +
   geom_boxplot(coef = NULL) +
-  geom_hline(aes(yintercept = NDE.true)) +
-  geom_hline(aes(yintercept = ATE.true), linetype = "dotdash") +
-  geom_hline(aes(yintercept = NIE.true), linetype = "dotted") + theme_light() +
+  geom_hline(aes(yintercept = log.NDE.true)) +
+  geom_hline(aes(yintercept = log.ATE.true), linetype = "dotdash") +
+  geom_hline(aes(yintercept = log.NIE.true), linetype = "dotted") + theme_light() +
   ylab("Estimate") + xlab("Unblinded randomized controlled trial size") +
   facet_grid(pY1~A, labeller = label_parsed, scales = "free_y") +
   theme(plot.title = element_text(size = 11),
