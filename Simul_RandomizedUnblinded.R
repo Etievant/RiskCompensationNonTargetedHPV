@@ -346,7 +346,7 @@ Onerun = function(p){
   }
   myfile  = paste0("RES_RandomizedUnblinded-n", n, "-pY1", pY1, "-A", 
                    paste(a, collapse = "_"), "-beta1", 
-                   round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
+                   round(beta_1, digits = 3), ".RData")
   save(res, file = myfile)
 }
  
@@ -372,7 +372,7 @@ RECAP$n         = as.factor(RECAP$n)
 RECAP$A         = as.factor(RECAP$A)
 RECAP$Approach  = as.factor(RECAP$Approach)
 myfile          = paste0("RECAP_RandomizedUnblinded-beta1", 
-                         round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
+                         round(beta_1, digits = 3), ".RData")
 save(RECAP, file = myfile)
 
 ## Analysis of the simulation results ------------------------------------------
@@ -502,14 +502,12 @@ Res = as.data.frame(Res)
 ColNames = colnames(Res[,c(1:38, 40:57)])
 Res[ColNames] = sapply(Res[ColNames], as.numeric)
 save(Res, file = paste0("Res_RandomizedUnblinded-beta1",
-                        round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData"))
+                        round(beta_1, digits = 3), ".RData"))
 Res[ColNames] = round(Res[ColNames], digits = 3)
 write.csv(Res, file = paste0("Res_RandomizedUnblinded-beta1",
-                             round(beta_1, digits = 3), 
-                             "-zeta_T", zeta_T, ".csv"))
+                             round(beta_1, digits = 3), ".csv"))
 write.xlsx(Res, paste0("Res_RandomizedUnblinded-beta1",
-                       round(beta_1, digits = 3), 
-                       "-zeta_T", zeta_T, ".xlsx"))
+                       round(beta_1, digits = 3), ".xlsx"))
 
 Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7:9,22,24,26,23,25,27,38,39,44)]) # only Joint-NC and the scenarios with n = 10,000
@@ -548,7 +546,7 @@ plot = ggplot(RECAP1, aes(x = n, y = Effect.hat, color = Approach)) +
   scale_colour_manual(values = c("deeppink", "cadetblue", "darkorange"),
                       labels = expression(hat(beta[1])^"*", hat(beta[1])^"*"-hat(beta[2])^"*",hat(beta[2])^"*"),
                       name = "Joint-NC estimate")
-pdf(paste0("Comparison_RandomizedUnblinded-methodNC-beta1", round(beta_1, digits = 3), 
-           "-zeta_T", zeta_T, ".pdf"),  width = 10, height = 7)
+pdf(paste0("Comparison_RandomizedUnblinded-methodNC-beta1", round(beta_1, digits = 3), ".pdf"),  
+    width = 10, height = 7)
 plot
 dev.off()
