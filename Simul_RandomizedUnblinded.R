@@ -13,8 +13,8 @@
 ## -----------------------------------------------------------------------------
 
 ### load packages and files ----------------------------------------------------
-source("EstimationFunctions.R")
-load("Parameters.RData") # file with certain of the fixed parameters
+source("EstimationFunctions.R")   # functions to be used for the estimation
+load("Parameters.RData")          # file with certain of the fixed parameters
 library(parallel)
 library(ggplot2)
 library(xtable)
