@@ -3,7 +3,7 @@
 ##              methods proposed in Etievant et al. (Biometrics, 2023) in an 
 ##              randomized setting with risk compensation
 ##
-##              The simulation is displayed in Web Appendix ?? in the 
+##              The simulation is displayed in Web Appendix I in the 
 ##              Supplementary Material of Etievant (2025)
 ##
 ##              Comments:
@@ -115,7 +115,7 @@ q_WRegion = param$q_WRegion[,2] # direct effect of WRegion on the targeted type
 s_WAge    = param$s_WAge        # direct effect of WAge on each nontargeted type
 s_WRegion = param$s_WRegion     # direct effect of WRegion on each nontargeted type
 
-Nreplic   = 5*10^3 # number of study replications
+Nreplic   = 5*10^3 # number of study replications (for each scenario)
 
 ### Function to be run for each scenario ---------------------------------------
 Onerun = function(p){
@@ -346,11 +346,11 @@ Onerun = function(p){
   }
   myfile  = paste0("RES_RandomizedUnblinded-n", n, "-pY1", pY1, "-A", 
                    paste(a, collapse = "_"), "-beta1", 
-                   round(beta_1, digits = 3), ".RData")
+                   round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
   save(res, file = myfile)
 }
  
-mclapply(1:nrow(PARAM), Onerun, mc.cores = 18)
+mclapply(1:nrow(PARAM), Onerun, mc.cores = 18) # the 18 scenarios are run in parallel
 
 ### Combining the results from the different scenarios -------------------------
 RES = NULL
@@ -372,7 +372,7 @@ RECAP$n         = as.factor(RECAP$n)
 RECAP$A         = as.factor(RECAP$A)
 RECAP$Approach  = as.factor(RECAP$Approach)
 myfile          = paste0("RECAP_RandomizedUnblinded-beta1", 
-                         round(beta_1, digits = 3), ".RData")
+                         round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
 save(RECAP, file = myfile)
 
 ## Analysis of the simulation results ------------------------------------------
@@ -502,12 +502,14 @@ Res = as.data.frame(Res)
 ColNames = colnames(Res[,c(1:38, 40:57)])
 Res[ColNames] = sapply(Res[ColNames], as.numeric)
 save(Res, file = paste0("Res_RandomizedUnblinded-beta1",
-                        round(beta_1, digits = 3), ".RData"))
+                        round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData"))
 Res[ColNames] = round(Res[ColNames], digits = 3)
 write.csv(Res, file = paste0("Res_RandomizedUnblinded-beta1",
-                             round(beta_1, digits = 3), ".csv"))
+                             round(beta_1, digits = 3), 
+                             "-zeta_T", zeta_T, ".csv"))
 write.xlsx(Res, paste0("Res_RandomizedUnblinded-beta1",
-                       round(beta_1, digits = 3), ".xlsx"))
+                       round(beta_1, digits = 3), 
+                       "-zeta_T", zeta_T, ".xlsx"))
 
 Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7:9,22,24,26,23,25,27,38,39,44)]) # only Joint-NC and the scenarios with n = 10,000
@@ -546,6 +548,7 @@ plot = ggplot(RECAP1, aes(x = n, y = Effect.hat, color = Approach)) +
   scale_colour_manual(values = c("deeppink", "cadetblue", "darkorange"),
                       labels = expression(hat(beta[1])^"*", hat(beta[1])^"*"-hat(beta[2])^"*",hat(beta[2])^"*"),
                       name = "Joint-NC estimate")
-pdf(paste0("Comparison_RandomizedUnblinded-methodNC-beta1", round(beta_1, digits = 3), ".pdf"),  width = 10, height = 7)
+pdf(paste0("Comparison_RandomizedUnblinded-methodNC-beta1", round(beta_1, digits = 3), 
+           "-zeta_T", zeta_T, ".pdf"),  width = 10, height = 7)
 plot
 dev.off()
