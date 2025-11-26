@@ -3,7 +3,7 @@
 ##              methods proposed in Etievant et al. (Biometrics, 2023) in an 
 ##              observational setting with risk compensation
 ##
-##              The simulation is displayed in Section 4 in the Main Document of 
+##              The simulation is displayed in Section 3 in the Main Document of 
 ##              Etievant (2025)
 ##
 ##              Comments:
@@ -119,7 +119,7 @@ q_WRegion = param$q_WRegion[,2] # direct effect of WRegion on the targeted type
 s_WAge    = param$s_WAge        # direct effect of WAge on each nontargeted type
 s_WRegion = param$s_WRegion     # direct effect of WRegion on each nontargeted type
 
-Nreplic   = 5*10^3 # number of study replications
+Nreplic   = 5*10^3 # number of study replications (for each scenario)
 
 ### Function to be run for each scenario ---------------------------------------
 Onerun = function(p){ 
@@ -345,11 +345,11 @@ Onerun = function(p){
   }
   myfile  = paste0("RES_Observational-n", n, "-pY1", pY1, "-A", 
                    paste(a, collapse = "_"), "-beta1", 
-                   round(beta_1, digits = 3), ".RData")
+                   round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
   save(res, file = myfile)
 }
  
-mclapply(1:nrow(PARAM), Onerun, mc.cores = 18)
+mclapply(1:nrow(PARAM), Onerun, mc.cores = 18) # the 18 scenarios are run in parallel
 
 ### Combining the results from the different scenarios -------------------------
 RES = NULL
@@ -359,7 +359,7 @@ for(p in 1: nrow(PARAM)){
   n               = PARAM[p, 5]
   myfile          = paste0("RES_Observational-n", n, "-pY1", pY1, "-A", 
                            paste(a, collapse = "_"), "-beta1", 
-                           round(beta_1, digits = 3), ".RData")
+                           round(beta_1, digits = 3), "-zeta_T", zeta_T, ".RData")
   load(myfile)
   RES = rbind(RES, res)
 }
@@ -371,7 +371,8 @@ RECAP$n         = as.factor(RECAP$n)
 RECAP$A         = as.factor(RECAP$A)
 RECAP$Approach  = as.factor(RECAP$Approach)
 
-myfile  = paste0("RECAP_Observational-beta1", round(beta_1, digits = 3), ".RData")
+myfile  = paste0("RECAP_Observational-beta1", round(beta_1, digits = 3), 
+                 "-zeta_T", zeta_T, ".RData")
 save(RECAP, file = myfile)
 
 ## Analysis of the simulation results ------------------------------------------
@@ -473,12 +474,12 @@ Res           = as.data.frame(Res)
 ColNames      = colnames(Res[,c(1:27, 30:47)])
 Res[ColNames] = sapply(Res[ColNames], as.numeric)
 save(Res, file = paste0("Res_Observational-beta1", round(beta_1, digits = 3),
-                        ".RData"))
+                        "-zeta_T", zeta_T, ".RData"))
 Res[ColNames] = round(Res[ColNames], digits = 3)
 write.csv(Res, file = paste0("Res_Observational-beta1",
-                             round(beta_1, digits = 3), ".csv"))
+                             round(beta_1, digits = 3), "-zeta_T", zeta_T, ".csv"))
 write.xlsx(Res, file = paste0("Res_Observational-beta1",
-                              round(beta_1, digits = 3), ".xlsx"))
+                              round(beta_1, digits = 3), "-zeta_T", zeta_T, ".xlsx"))
 Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7,8,10,11,12,14,13,15,28,29,34)]) # only the scenarios with n = 10,000
 print(xtable(latextable, digits = 3), include.rownames=FALSE) # print the latex table
@@ -510,7 +511,8 @@ plot = ggplot(RECAP, aes(x = n, y = beta_1.hat, color = Approach)) +
         strip.background = element_rect(color="black", fill="white", size = 0.5, linetype="solid"),
         strip.text.x = element_text(size = 11, color = "black"),
         strip.text.y = element_text(size = 11, color = "black"))
-pdf(paste0("Comparison_Observational-beta1", round(beta_1, digits = 3), ".pdf"),
+pdf(paste0("Comparison_Observational-beta1", round(beta_1, digits = 3), 
+           "-zeta_T", zeta_T, ".pdf"),
     width = 10, height = 7)
 plot
 dev.off()
