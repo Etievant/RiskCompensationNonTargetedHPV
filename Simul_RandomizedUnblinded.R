@@ -386,68 +386,68 @@ for(i in 1:nrow(PARAM)){
   log.NDE = RECAP1$log.NDE.true[1]
   log.NIE = RECAP1$log.NIE.true[1]
 
-  # Coverage of the confidence intervals
-  cov.ATE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.ATE"),4] < ATE)&(RECAP1[which(RECAP1$Approach == "NC.ATE"),5] > ATE)) / length(RECAP1[which(RECAP1$Approach == "NC.ATE"),5])
-  cov.NDE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.NDE"),4] < NDE)&(RECAP1[which(RECAP1$Approach == "NC.NDE"),5] > NDE)) / length(RECAP1[which(RECAP1$Approach == "NC.NDE"),5])
-  cov.NIE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.NIE"),4] < NIE)&(RECAP1[which(RECAP1$Approach == "NC.NIE"),5] > NIE)) / length(RECAP1[which(RECAP1$Approach == "NC.NIE"),5])
-  cov.ATE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.ATE"),4] < ATE)&(RECAP1[which(RECAP1$Approach == "MH.ATE"),5] > ATE)) / length(RECAP1[which(RECAP1$Approach == "MH.ATE"),5])
-  cov.NDE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.NDE"),4] < NDE)&(RECAP1[which(RECAP1$Approach == "MH.NDE"),5] > NDE)) / length(RECAP1[which(RECAP1$Approach == "MH.NDE"),5])
-  cov.NIE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.NIE"),4] < NIE)&(RECAP1[which(RECAP1$Approach == "MH.NIE"),5] > NIE)) / length(RECAP1[which(RECAP1$Approach == "MH.NIE"),5])
-  cov.ATE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.ATE"),4] < ATE)&(RECAP1[which(RECAP1$Approach == "Reg.ATE"),5] > ATE)) / length(RECAP1[which(RECAP1$Approach == "Reg.ATE"),5])
-  cov.NDE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.NDE"),4] < NDE)&(RECAP1[which(RECAP1$Approach == "Reg.NDE"),5] > NDE)) / length(RECAP1[which(RECAP1$Approach == "Reg.NDE"),5])
-  cov.NIE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.NIE"),4] < NIE)&(RECAP1[which(RECAP1$Approach == "Reg.NIE"),5] > NIE)) / length(RECAP1[which(RECAP1$Approach == "Reg.NIE"),5])
+  # Coverage of the 95% confidence intervals
+  cov.ATE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.log.ATE"),4] < log.ATE)&(RECAP1[which(RECAP1$Approach == "NC.log.ATE"),5] > log.ATE)) / length(RECAP1[which(RECAP1$Approach == "NC.log.ATE"),5])
+  cov.NDE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.log.NDE"),4] < log.NDE)&(RECAP1[which(RECAP1$Approach == "NC.log.NDE"),5] > log.NDE)) / length(RECAP1[which(RECAP1$Approach == "NC.log.NDE"),5])
+  cov.NIE.NC     = sum((RECAP1[which(RECAP1$Approach == "NC.log.NIE"),4] < log.NIE)&(RECAP1[which(RECAP1$Approach == "NC.log.NIE"),5] > log.NIE)) / length(RECAP1[which(RECAP1$Approach == "NC.log.NIE"),5])
+  cov.ATE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.log.ATE"),4] < log.ATE)&(RECAP1[which(RECAP1$Approach == "MH.log.ATE"),5] > log.ATE)) / length(RECAP1[which(RECAP1$Approach == "MH.log.ATE"),5])
+  cov.NDE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.log.NDE"),4] < log.NDE)&(RECAP1[which(RECAP1$Approach == "MH.log.NDE"),5] > log.NDE)) / length(RECAP1[which(RECAP1$Approach == "MH.log.NDE"),5])
+  cov.NIE.MH     = sum((RECAP1[which(RECAP1$Approach == "MH.log.NIE"),4] < log.NIE)&(RECAP1[which(RECAP1$Approach == "MH.log.NIE"),5] > log.NIE)) / length(RECAP1[which(RECAP1$Approach == "MH.log.NIE"),5])
+  cov.ATE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),4] < log.ATE)&(RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),5] > log.ATE)) / length(RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),5])
+  cov.NDE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),4] < log.NDE)&(RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),5] > log.NDE)) / length(RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),5])
+  cov.NIE.Reg     = sum((RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),4] < log.NIE)&(RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),5] > log.NIE)) / length(RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),5])
 
   # Standard deviation over the 5000 replications
-  sd.ATE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.ATE"),2])
-  sd.NDE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.NDE"),2])
-  sd.NIE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.NIE"),2])
-  sd.ATE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.ATE"),2])
-  sd.NDE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.NDE"),2])
-  sd.NIE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.NIE"),2])
-  sd.ATE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.ATE"),2])
-  sd.NDE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.NDE"),2])
-  sd.NIE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.NIE"),2])
+  sd.ATE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.log.ATE"),2])
+  sd.NDE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.log.NDE"),2])
+  sd.NIE.MH           = sd(RECAP1[which(RECAP1$Approach == "MH.log.NIE"),2])
+  sd.ATE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.log.ATE"),2])
+  sd.NDE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.log.NDE"),2])
+  sd.NIE.NC           = sd(RECAP1[which(RECAP1$Approach == "NC.log.NIE"),2])
+  sd.ATE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),2])
+  sd.NDE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),2])
+  sd.NIE.Reg           = sd(RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),2])
 
   # Mean sandwich standard error over the 5000 replications
-  sandwich_se.ATE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.ATE"),3])
-  sandwich_se.NDE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.NDE"),3])
-  sandwich_se.NIE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.NIE"),3])
-  sandwich_se.ATE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.ATE"),3])
-  sandwich_se.NDE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.NDE"),3])
-  sandwich_se.NIE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.NIE"),3])
-  sandwich_se.ATE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.ATE"),3])
-  sandwich_se.NDE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.NDE"),3])
-  sandwich_se.NIE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.NIE"),3])
+  sandwich_se.ATE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.log.ATE"),3])
+  sandwich_se.NDE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.log.NDE"),3])
+  sandwich_se.NIE.NC        = mean(RECAP1[which(RECAP1$Approach == "NC.log.NIE"),3])
+  sandwich_se.ATE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.log.ATE"),3])
+  sandwich_se.NDE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.log.NDE"),3])
+  sandwich_se.NIE.MH        = mean(RECAP1[which(RECAP1$Approach == "MH.log.NIE"),3])
+  sandwich_se.ATE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),3])
+  sandwich_se.NDE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),3])
+  sandwich_se.NIE.Reg        = mean(RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),3])
 
   # Mean effect estimate and mean squared error over the 5000 replications
-  mean.ATE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.ATE"),2])
-  MSE.ATE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.ATE"),2] - ATE)^2) # MSE
-  mean.NDE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.NDE"),2])
-  MSE.NDE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.NDE"),2] - NDE)^2) # MSE
-  mean.NIE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.NIE"),2])
-  MSE.NIE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.NIE"),2] - NIE)^2) # MSE
-  mean.ATE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.ATE"),2])
-  MSE.ATE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.ATE"),2] - ATE)^2) # MSE
-  mean.NDE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.NDE"),2])
-  MSE.NDE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.NDE"),2] - NDE)^2) # MSE
-  mean.NIE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.NIE"),2])
-  MSE.NIE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.NIE"),2] - NIE)^2) # MSE
-  mean.ATE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.ATE"),2])
-  MSE.ATE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.ATE"),2] - ATE)^2) # MSE
-  mean.NDE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.NDE"),2])
-  MSE.NDE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.NDE"),2] - NDE)^2) # MSE
-  mean.NIE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.NIE"),2])
-  MSE.NIE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.NIE"),2] - NIE)^2) # MSE
+  mean.ATE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.log.ATE"),2])
+  MSE.ATE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.log.ATE"),2] - log.ATE)^2) 
+  mean.NDE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.log.NDE"),2])
+  MSE.NDE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.log.NDE"),2] - log.NDE)^2) 
+  mean.NIE.NC         = mean(RECAP1[which(RECAP1$Approach == "NC.log.NIE"),2])
+  MSE.NIE.NC          = mean((RECAP1[which(RECAP1$Approach == "NC.log.NIE"),2] - log.NIE)^2) 
+  mean.ATE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.log.ATE"),2])
+  MSE.ATE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.log.ATE"),2] - log.ATE)^2) 
+  mean.NDE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.log.NDE"),2])
+  MSE.NDE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.log.NDE"),2] - log.NDE)^2) 
+  mean.NIE.MH         = mean(RECAP1[which(RECAP1$Approach == "MH.log.NIE"),2])
+  MSE.NIE.MH          = mean((RECAP1[which(RECAP1$Approach == "MH.log.NIE"),2] - log.NIE)^2) 
+  mean.ATE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),2])
+  MSE.ATE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.log.ATE"),2] - log.ATE)^2) 
+  mean.NDE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),2])
+  MSE.NDE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.log.NDE"),2] - log.NDE)^2)
+  mean.NIE.Reg         = mean(RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),2])
+  MSE.NIE.Reg          = mean((RECAP1[which(RECAP1$Approach == "Reg.log.NIE"),2] - log.NIE)^2) 
 
-  Res = rbind(Res, c(relbias.log.NDE.MH = abs((mean.NDE.MH - NDE) / NDE),
-                     relbias.log.NIE.MH = abs((mean.NIE.MH - NIE) / NIE),
-                     relbias.log.ATE.MH = abs((mean.ATE.MH - ATE) / ATE),
-                     relbias.log.NDE.Reg = abs((mean.NDE.Reg - NDE) / NDE),
-                     relbias.log.NIE.Reg = abs((mean.NIE.Reg - NIE) / NIE),
-                     relbias.log.ATE.Reg = abs((mean.ATE.Reg - ATE) / ATE),
-                     relbias.log.NDE.NC = abs((mean.NDE.NC - NDE) / NDE),
-                     relbias.log.NIE.NC = abs((mean.NIE.NC - NIE) / NIE),
-                     relbias.log.ATE.NC = abs((mean.ATE.NC - ATE) / ATE),
+  Res = rbind(Res, c(relbias.log.NDE.MH = abs((mean.NDE.MH - log.NDE) / log.NDE),
+                     relbias.log.NIE.MH = abs((mean.NIE.MH - log.NIE) / log.NIE),
+                     relbias.log.ATE.MH = abs((mean.ATE.MH - log.ATE) / log.ATE),
+                     relbias.log.NDE.Reg = abs((mean.NDE.Reg - log.NDE) / log.NDE),
+                     relbias.log.NIE.Reg = abs((mean.NIE.Reg - log.NIE) / log.NIE),
+                     relbias.log.ATE.Reg = abs((mean.ATE.Reg - log.ATE) / log.ATE),
+                     relbias.log.NDE.NC = abs((mean.NDE.NC - log.NDE) / log.NDE),
+                     relbias.log.NIE.NC = abs((mean.NIE.NC - log.NIE) / log.NIE),
+                     relbias.log.ATE.NC = abs((mean.ATE.NC - log.ATE) / log.ATE),
                      empir_sd.log.NDE.MH = sd.NDE.MH,
                      sandwich_se.log.NDE.MH = sandwich_se.NDE.MH,
                      empir_sd.log.NIE.MH = sd.NIE.MH,
@@ -512,9 +512,9 @@ write.xlsx(Res, paste0("Res_RandomizedUnblinded-beta1",
 Res1 = Res[which(Res$n == 10000),]
 latextable = cbind(Res1[, c(7:9,22,24,26,23,25,27,38,39,44)]) # only Joint-NC and the scenarios with n = 10,000
 print(xtable(latextable, digits = 3), include.rownames=FALSE) # print the latex table
-# Res2 = Res[which(Res$n == 5000),]
-# latextable2 = cbind(Res2[, c(7:9,22,24,26,23,25,27,38,39,44)])
-# print(xtable(latextable2, digits = 3), include.rownames=FALSE) # latex table for n = 5,000
+Res2 = Res[which(Res$n == 5000),]
+latextable2 = cbind(Res2[, c(7:9,22,24,26,23,25,27,38,39,44)])
+print(xtable(latextable2, digits = 3), include.rownames=FALSE) # latex table for n = 5,000
 
 ## Plotting the results --------------------------------------------------------
 RECAP$pY1 = factor(RECAP$pY1,
