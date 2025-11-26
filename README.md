@@ -10,7 +10,7 @@ gee, ggplot2, grid, gtable, parallel, openxlsx and xtable.
 
 ### Scripts
 
-* Script `Simul_Observational.R` replicates the simulations proposed by Etievant in Section 4 in the Main Document.
+* Script `Simul_Observational.R` replicates the simulations proposed by Etievant in Section 3 in the Main Document.
 
 * Script `Simul_RandomizedUnblinded.R` replicates the simulations proposed in Web Appendix E. 
 
